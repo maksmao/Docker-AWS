@@ -25,13 +25,19 @@ jobs:
     - name: Checkout repo
       uses: actions/checkout@v1
       
-    - name: Configure AWS Credentials
+    - name: Configure AWS Credentials 1.0
       uses: aws-actions/configure-aws-credentials@v1
       with:
         aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
         aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-        aws-region: us-east-2
+        aws-region: ${{ env.ECS_REGION }}
 
+    - name: Configure AWS credentials 2.0
+      uses: aws-actions/configure-aws-credentials@v1 # More information on this action can be found below in the 'AWS Credentials' section
+      with:
+        role-to-assume: arn:aws:iam::571190452482:user/Docker-githubaction
+        aws-region: ${{ env.ECS_REGION }}
+    
     - name: Login to Amazon ECR
       id: login-ecr
       uses: aws-actions/amazon-ecr-login@v1
