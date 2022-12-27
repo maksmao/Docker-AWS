@@ -1,0 +1,22 @@
+name: Docker Image CI
+
+on:
+  push:
+    branches: [ "master" ]
+
+jobs:
+
+  build:
+
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v1
+    - name: Build the Docker image
+      run: |
+        docker build -t sample:latest .
+        docker run -d -p 2020:80 --name=myproject sample:latest
+    - name: List docker process 
+      run: docker ps -a
+    - name: List docker images
+      run : docker images -a
