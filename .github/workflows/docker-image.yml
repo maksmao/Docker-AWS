@@ -14,15 +14,7 @@ jobs:
 
     runs-on: ubuntu-latest
 
-    steps:
-    - uses: actions/checkout@v1
-    - name: Build the Docker image
-      run: |
-        pwd
-        ls -al
-        docker build -t sample:latest .
-        docker run -d -p 2020:80 --name=myproject sample:latest
-        
+    steps: 
     - name: List docker process and images 
       run: | 
         docker ps -a 
@@ -37,6 +29,17 @@ jobs:
         aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
         aws-region: us-east-2
     
+    - name: Clone Git Repository
+      uses: actions/checkout@v1   
+    - name: Deploy to ECR 
+      run: |
+        aws ecr get-login-password --region eu-central-1 | docker login --username \
+        AWS --password-stdin 571190452482.dkr.ecr.eu-central-1.amazonaws.com
+        
+        docker build -t sample .
+        docker tag sample:latest 571190452482.dkr.ecr.eu-central-1.amazonaws.com/sample:latest
+        docker push 571190452482.dkr.ecr.eu-central-1.amazonaws.com/sample:latest
+
     
 
 
