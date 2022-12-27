@@ -20,3 +20,8 @@ jobs:
       run: docker ps -a
     - name: List docker images
       run : docker images -a
+    - name: Check IP
+      run : ifconfig
+    - name: Check IP and grep
+      run : ifconfig | grep inet
+      
