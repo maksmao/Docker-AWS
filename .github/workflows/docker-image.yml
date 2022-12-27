@@ -29,12 +29,14 @@ jobs:
         aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
         aws-region: us-east-2
     
-    - name: Clone Git Repository
-      uses: actions/checkout@v1   
-    - name: Deploy to ECR 
-      run: |
-        aws ecr get-login-password --region eu-central-1 | docker login --username \
-        AWS --password-stdin 571190452482.dkr.ecr.eu-central-1.amazonaws.com
+    - name: Checkout repo
+      uses: actions/checkout@v1
+
+    - name: Configure AWS credentials
+      uses: aws-actions/configure-aws-credentials@v1 # More information on this action can be found below in the 'AWS Credentials' section
+      with:
+        role-to-assume: arn:aws:iam::571190452482.dkr.ecr.eu-central-1.amazonaws.com/sample
+        aws-region: ${{ env.ECS_REGION}}
         
 
 
